@@ -1,0 +1,19 @@
+		;		This is a template provided by AC
+		;		ELEC 3275
+		
+Array	DCD		11111111, 22222222, 33333333, 44444444, 55555555, 66666666, 77777777, 88888888
+		
+		LDR		R0, =Array	; R0 Address = Array Address[0]
+		LDR		R1, =4		; R1 Value = i = 3
+Loop		LSL		R2, R1, #2	; R2 Value = i * 4 => adjustment to word memory indexing
+		LDR		R3, [R0, R2]	; R3 Value = Array.index(i) = Array.addressIndex(i*4)
+		RSB		R4, R1, #7	; R4 Value = 7 - i = index to store Array[i]
+		LSL		R4, R4, #2	; R4 Value = 4(7 - i) = address index to store Array[i]
+		ADD		R4, R4, R0	; R4 Address = address of Array[7-i]
+		LDR		R5, [R4, #0]	; R5 Value = Value at address of Array[7-i]
+		STR		R3, [R4, #0]	; Array.addressIndex(i) = R3 Value
+		STR		R5, [R0, R2]	; Array.addressIndex(7-i) = R5 Value
+		CMP		R1, #0		; Set flags for i == 0
+		SUB		R1, R1, #1	; i = i - 1
+		BNE		Loop			; loop if not equal
+		END
